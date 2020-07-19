@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Web.Scotty.Format.Trans (
@@ -69,6 +70,14 @@ instance Applicative (ResponseFormat e m) where
   pure = return
   (<*>) = ap
 
+#if MIN_VERSION_base(4,9,0)
+instance Semigroup (ResponseFormat e m a) where
+  (<>) (RF a _) (RF b _) = RF (a <> b) undefined
+
 instance Monoid (ResponseFormat e m a) where
   mempty = RF mempty undefined
+#else
+instance Monoid (ResponseFormat e m a) where
   mappend (RF a _) (RF b _) = RF (a <> b) undefined
+  mempty = RF mempty undefined
+#endif
