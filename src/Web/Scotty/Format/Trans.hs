@@ -12,7 +12,9 @@ module Web.Scotty.Format.Trans (
 
 import Control.Monad (liftM, ap)
 import Data.Maybe (fromMaybe)
+#if !MIN_VERSION_base(4,9,0)
 import Data.Monoid ((<>))
+#endif
 import Data.Text.Lazy (toStrict)
 import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Media (MediaType, mapAcceptMedia)
